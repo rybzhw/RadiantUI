@@ -27,7 +27,7 @@ public:
 	// Begin UActorComponent interface.
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 	virtual void InitializeComponent() override;
-	virtual void OnComponentDestroyed() override;
+	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
 	// End UActorComponent interface.
 
 	UFUNCTION(BlueprintCallable, Category = "WebView")

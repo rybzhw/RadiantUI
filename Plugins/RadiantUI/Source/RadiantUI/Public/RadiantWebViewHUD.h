@@ -36,6 +36,12 @@ public:
 	virtual void PostInitializeComponents() override;
 	// End AActor Interface
 
+	void OnLeftMouseButtonClick();
+	void OnLeftMouseButtonRelease();
+	void OnRightMouseButtonClick();
+	void OnRightMouseButtonRelease();
+	void OnEscape();
+
 	virtual void PreDrawHUD() {}
 	virtual void PostDrawHUD() {}
 

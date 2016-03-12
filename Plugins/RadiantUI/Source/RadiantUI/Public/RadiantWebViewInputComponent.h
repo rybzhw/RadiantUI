@@ -25,7 +25,7 @@ public:
 
 	URadiantWebViewInputComponent(const FObjectInitializer& ObjectInitializer);
 
-	UPROPERTY(EditAnywhere, noclear, Instanced, Category = "Input|Actions", meta=(Tooltip="Actions listed here will be masked (not processed) by the player controller when an editable field is selected."))
+	UPROPERTY(EditAnywhere, noclear, /*Instanced,*/ Category = "Input|Actions", meta=(Tooltip="Actions listed here will be masked (not processed) by the player controller when an editable field is selected."))
 	TSubclassOf<class URadiantWebViewInputMaskedActionList> MaskedActionListClass;
 
 	UFUNCTION(BlueprintCallable, Category = WebView)

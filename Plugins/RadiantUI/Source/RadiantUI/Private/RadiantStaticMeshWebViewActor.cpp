@@ -87,7 +87,7 @@ void ARadiantStaticMeshWebViewActor::ExtractInteractionMesh()
 	TArray<uint32> Indices;
 	LOD.IndexBuffer.GetCopy(Indices);
 
-	InteractionMesh = ConstructObject<URadiantWebViewInteractionMesh>(URadiantWebViewInteractionMesh::StaticClass(), this);
+	InteractionMesh = NewObject<URadiantWebViewInteractionMesh>(this, URadiantWebViewInteractionMesh::StaticClass());
 
 	// Extract the sections that reference this material:
 
@@ -134,7 +134,7 @@ void ARadiantStaticMeshWebViewActor::PostEditChangeProperty(struct FPropertyChan
 	if ((PropertyName == GET_MEMBER_NAME_CHECKED(ARadiantStaticMeshWebViewActor, MaterialIndex)) || 
 		(PropertyName == GET_MEMBER_NAME_CHECKED(ARadiantStaticMeshWebViewActor, StaticMeshComponent)))
 	{
-		if (bActorInitialized)
+		if (IsActorInitialized())
 		{
 			if (InteractionMesh)
 			{

@@ -65,7 +65,7 @@ inline int ExtendedKeyBits(int VK)
 			} \
 		} \
 		CefRuntimeKeyEvent Event; \
-		FMemory::MemZero(Event); \
+		FMemory::Memzero(Event); \
 		Event.Type = (InEvent == IE_Pressed) ? CEFRT_RawKeyDown : CEFRT_KeyUp; \
 		Event.WindowsKeyCode = __VK; \
 		int ScanCode = MapVirtualKey(__VK, MAPVK_VK_TO_VSC); \
@@ -82,7 +82,7 @@ inline int ExtendedKeyBits(int VK)
 		if (IE_Pressed == InEvent) \
 		{\
 			CefRuntimeKeyEvent Event; \
-			FMemory::MemZero(Event); \
+			FMemory::Memzero(Event); \
 			BYTE KeyState[256]; \
 			FMemory::Memzero(KeyState, 256); \
 			KeyState[VK_CAPITAL] = (ModifierKeyState&CEFRT_CapsLockOn) ? 0xff : 0; \

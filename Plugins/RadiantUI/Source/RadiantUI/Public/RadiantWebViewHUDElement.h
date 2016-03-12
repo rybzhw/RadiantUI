@@ -51,6 +51,8 @@ public:
 	virtual FReply OnFocusReceived(const FGeometry& MyGeometry, const FFocusEvent& InFocusEvent);
 	virtual void OnFocusLost(const FFocusEvent& InFocusEvent);
 
+	//virtual bool OnHitTest(const FGeometry& MyGeometry, FVector2D InAbsoluteCursorPosition) override;
+
 private:
 
 	friend class ARadiantWebViewHUD;
@@ -163,6 +165,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = JavaScript)
 	TScriptInterface<IRadiantJavaScriptFunctionCallTargetInterface> GetJavaScriptCallContext();
+
+	void ForceFocus(APlayerController *Owner);
 
 	virtual void CallJavaScriptFunction(const FString& HookName, UObject* Parameters) override;
 

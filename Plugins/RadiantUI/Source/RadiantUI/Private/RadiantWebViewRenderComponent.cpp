@@ -31,10 +31,10 @@ void URadiantWebViewRenderComponent::InitializeComponent()
 	}
 }
 
-void URadiantWebViewRenderComponent::OnComponentDestroyed()
+void URadiantWebViewRenderComponent::OnComponentDestroyed(bool bDestroyingHierarchy)
 {
 	WebView.Reset();
-	Super::OnComponentDestroyed();
+	Super::OnComponentDestroyed(bDestroyingHierarchy);
 }
 
 void URadiantWebViewRenderComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)

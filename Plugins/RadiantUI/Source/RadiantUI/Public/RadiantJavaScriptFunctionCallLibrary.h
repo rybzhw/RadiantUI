@@ -13,6 +13,6 @@ class URadiantJavaScriptFunctionCallLibrary : public UBlueprintFunctionLibrary
 
 public:
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category=JavaScript, meta=(FriendlyName="New JavaScript Function Call Instance"))
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category=JavaScript, meta=(DisplayName ="New JavaScript Function Call Instance"))
 	static URadiantJavaScriptFunctionCall* NewJavaScriptFunctionCallInstance(TSubclassOf<URadiantJavaScriptFunctionCall> Class);
 };

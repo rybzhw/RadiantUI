@@ -198,7 +198,7 @@ FRadiantWebView::FRadiantWebView(const FRadiantWebViewDefaultSettings& Settings)
 , InitialCanvasColor(Settings.InitialCanvasColor)
 {
 	bCursorVisible = false;
-	bFocusingEditableField = false;
+	bFocusingEditableField = true;
 	bTransparentRendering = Settings.bTransparentRendering;
 
 	CursorPosition = FVector2D(0.5, 0.5);
@@ -214,7 +214,6 @@ FRadiantWebView::FRadiantWebView(const FRadiantWebViewDefaultSettings& Settings)
 	bTextureDirty = false;
 	bDedicatedServer = false;
 	bCursorMoved = false;
-	bFocusingEditableField = false;
 	bHasInitialFrame = false;
 	bRunning = false;
 	TextureUpdateTime = 0.0f;

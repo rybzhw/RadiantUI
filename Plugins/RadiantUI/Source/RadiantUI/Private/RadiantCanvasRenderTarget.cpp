@@ -12,16 +12,16 @@ URadiantCanvasRenderTarget* URadiantCanvasRenderTarget::CreateTransient(uint32 I
 		((InSizeX % GPixelFormats[InFormat].BlockSizeX) == 0) &&
 		((InSizeY % GPixelFormats[InFormat].BlockSizeY) == 0))
 	{
-		Canvas = ConstructObject<URadiantCanvasRenderTarget>(
-			URadiantCanvasRenderTarget::StaticClass(),
+		Canvas = NewObject<URadiantCanvasRenderTarget>(
 			GetTransientPackage(),
+			URadiantCanvasRenderTarget::StaticClass(),
 			NAME_None,
 			RF_Transient
 			);
-		
-		Canvas->RenderTargetTexture = ConstructObject<UTextureRenderTarget2D>(
-			UTextureRenderTarget2D::StaticClass(),
+
+		Canvas->RenderTargetTexture = NewObject<UTextureRenderTarget2D>(
 			GetTransientPackage(),
+			UTextureRenderTarget2D::StaticClass(),
 			NAME_None,
 			RF_Transient
 			);

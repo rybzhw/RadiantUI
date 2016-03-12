@@ -20,7 +20,7 @@ void ARadiantWebViewHUD::PostInitializeComponents()
 	{
 		if (*It)
 		{
-			URadiantWebViewHUDElement *Element = ConstructObject<URadiantWebViewHUDElement>(*It);
+			URadiantWebViewHUDElement *Element = NewObject<URadiantWebViewHUDElement>((UObject*)GetTransientPackage(), *It);
 			if (Element)
 			{
 				Element->World = World;
@@ -63,6 +63,8 @@ void ARadiantWebViewHUD::BeginPlay()
 {
 	check(GEngine->GameViewport);
 
+	Super::BeginPlay();
+
 	int ZOrder = 0;
 
 	for (auto It = HUDElementInstances.CreateConstIterator(); It; ++It)
@@ -74,11 +76,95 @@ void ARadiantWebViewHUD::BeginPlay()
 
 		SAssignNew(Element->SWidget, SRadiantWebViewHUDElement).HUDOwner(this).HUDElement(Element);
 		GEngine->GameViewport->AddViewportWidgetContent(SAssignNew(Element->Container, SWeakWidget).PossiblyNullContent(Element->SWidget.ToSharedRef()), ZOrder++);
-		Element->SetSlateVisibility();
 
+		Element->SetSlateVisibility();
 	}
 
-	Super::BeginPlay();
+	InputComponent = ConstructObject<UInputComponent>(UInputComponent::StaticClass(), this, TEXT("HUD_InputComponent0"));
+	if (InputComponent)
+	{
+		InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &ARadiantWebViewHUD::OnLeftMouseButtonClick);
+		InputComponent->BindKey(EKeys::LeftMouseButton, IE_Released, this, &ARadiantWebViewHUD::OnLeftMouseButtonRelease);
+		InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &ARadiantWebViewHUD::OnRightMouseButtonClick);
+		InputComponent->BindKey(EKeys::RightMouseButton, IE_Released, this, &ARadiantWebViewHUD::OnRightMouseButtonRelease);
+
+		InputComponent->BindKey(EKeys::Escape, IE_Released, this, &ARadiantWebViewHUD::OnEscape);
+		InputComponent->BindKey(EKeys::LeftAlt, IE_Released, this, &ARadiantWebViewHUD::OnEscape);
+	}
+}
+
+void ARadiantWebViewHUD::OnLeftMouseButtonClick()
+{
+	float PosX, PosY;
+	APlayerController *Controller = GetOwningPlayerController();
+	Controller->GetMousePosition(PosX, PosY);
+
+	for (auto It = HUDElementInstances.CreateConstIterator(); It; ++It)
+	{
+		CefRuntimeMouseEvent Event;
+		Event.X = PosX;
+		Event.Y = PosY;
+		(*It)->WebView->GetBrowser()->SendMouseClickEvent(Event, CEFRT_MouseLeft, false, 1);
+	}
+}
+
+void ARadiantWebViewHUD::OnLeftMouseButtonRelease()
+{
+	float PosX, PosY;
+	APlayerController *Controller = GetOwningPlayerController();
+	Controller->GetMousePosition(PosX, PosY);
+
+	for (auto It = HUDElementInstances.CreateConstIterator(); It; ++It)
+	{
+		CefRuntimeMouseEvent Event;
+		Event.X = PosX;
+		Event.Y = PosY;
+		(*It)->WebView->GetBrowser()->SendMouseClickEvent(Event, CEFRT_MouseLeft, true, 1);
+		(*It)->ForceFocus(Controller);
+	}
+}
+
+void ARadiantWebViewHUD::OnRightMouseButtonClick()
+{
+	float PosX, PosY;
+	APlayerController *Controller = GetOwningPlayerController();
+	Controller->GetMousePosition(PosX, PosY);
+
+	for (auto It = HUDElementInstances.CreateConstIterator(); It; ++It)
+	{
+		CefRuntimeMouseEvent Event;
+		Event.X = PosX;
+		Event.Y = PosY;
+		(*It)->WebView->GetBrowser()->SendMouseClickEvent(Event, CEFRT_MouseRight, false, 1);
+	}
+}
+
+void ARadiantWebViewHUD::OnRightMouseButtonRelease()
+{
+	float PosX, PosY;
+	APlayerController *Controller = GetOwningPlayerController();
+	Controller->GetMousePosition(PosX, PosY);
+
+	for (auto It = HUDElementInstances.CreateConstIterator(); It; ++It)
+	{
+		CefRuntimeMouseEvent Event;
+		Event.X = PosX;
+		Event.Y = PosY;
+		(*It)->WebView->GetBrowser()->SendMouseClickEvent(Event, CEFRT_MouseRight, true, 1);
+		(*It)->ForceFocus(Controller);
+	}
+}
+
+void ARadiantWebViewHUD::OnEscape()
+{
+	APlayerController *Controller = GetOwningPlayerController();
+	Controller->bShowMouseCursor = false;
+	Controller->SetCinematicMode(false, false, false, true, true);
+
+	FInputModeGameOnly InputMode;
+	Controller->SetInputMode(InputMode);
+
+	Controller->PopInputComponent(InputComponent);
 }
 
 void ARadiantWebViewHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)

@@ -214,7 +214,7 @@ int GetCurrentModifiers(const FInputEvent& KeyEvent, const FKey& Key)
 void DispatchSlateKey(ICefWebView* WebView, const FKeyEvent& KeyEvent, bool Pressed)
 {
 	CefRuntimeKeyEvent Event;
-	FMemory::MemZero(Event);
+	FMemory::Memzero(Event);
 	Event.Type = Pressed ? CEFRT_RawKeyDown : CEFRT_KeyUp;
 
 	const FKey Key = KeyEvent.GetKey();
@@ -231,7 +231,7 @@ void DispatchSlateKey(ICefWebView* WebView, const FKeyEvent& KeyEvent, bool Pres
 void DispatchSlateChar(ICefWebView* WebView, const FCharacterEvent& KeyEvent)
 {
 	CefRuntimeKeyEvent Event;
-	FMemory::MemZero(Event);
+	FMemory::Memzero(Event);
 	Event.Type = CEFRT_Char;
 
 	/*
@@ -268,6 +268,19 @@ void SRadiantWebViewHUDElement::Construct(const FArguments& InArgs)
 void SRadiantWebViewHUDElement::Tick(const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime)
 {
 	SCompoundWidget::Tick(AllottedGeometry, InCurrentTime, InDeltaTime);
+	
+	REPLY_IF_NOT_READY();
+	
+	float PosX, PosY;
+	APlayerController *Controller = HUDOwner->PlayerOwner;
+	Controller->GetMousePosition(PosX, PosY);
+
+	CefRuntimeMouseEvent Event;
+	Event.X = FMath::FloorToInt(PosX + 0.5f);
+	Event.Y = FMath::FloorToInt(PosY + 0.5f);
+	Event.Modifiers = 0;
+	HUDElement->WebView->GetBrowser()->SendMouseMoveEvent(Event, false);
+	HUDElement->WebView->SetCursorPosition(FVector2D(PosX, PosY));
 }
 
 void SRadiantWebViewHUDElement::GetMouseState(const FGeometry& InGeometry, const FPointerEvent& InPointerEvent, CefRuntimeMouseEvent &OutMouseEvent)
@@ -315,7 +328,7 @@ void SRadiantWebViewHUDElement::GetMouseState(const FGeometry& InGeometry, const
 FReply SRadiantWebViewHUDElement::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	REPLY_IF_NOT_READY(FReply::Handled());
-	HITTEST(FReply::Unhandled());
+	//HITTEST(FReply::Unhandled());
 
 	FKey MouseKey = MouseEvent.GetEffectingButton();
 
@@ -346,7 +359,7 @@ FReply SRadiantWebViewHUDElement::OnMouseButtonDown(const FGeometry& MyGeometry,
 
 	HUDElement->WebView->GetBrowser()->SendMouseClickEvent(Event, CefMouseButton, false, 1);
 
-	//UE_LOG(RadiantUILog, Log, TEXT("MouseDown"));
+	UE_LOG(RadiantUILog, Log, TEXT("MouseDown"));
 
 	MouseCaptured = true;
 	return FReply::Handled().PreventThrottling().CaptureMouse(SharedThis(this));
@@ -355,7 +368,7 @@ FReply SRadiantWebViewHUDElement::OnMouseButtonDown(const FGeometry& MyGeometry,
 FReply SRadiantWebViewHUDElement::OnMouseButtonUp(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	REPLY_IF_NOT_READY(FReply::Handled());
-	HITTEST(FReply::Unhandled());
+	//HITTEST(FReply::Unhandled());
 
 	FKey MouseKey = MouseEvent.GetEffectingButton();
 
@@ -380,7 +393,7 @@ FReply SRadiantWebViewHUDElement::OnMouseButtonUp(const FGeometry& MyGeometry, c
 		return FReply::Handled().ReleaseMouseCapture();
 	}
 
-	//UE_LOG(RadiantUILog, Log, TEXT("MouseUp"));
+	UE_LOG(RadiantUILog, Log, TEXT("MouseUp"));
 
 	return FReply::Handled();
 }
@@ -388,7 +401,7 @@ FReply SRadiantWebViewHUDElement::OnMouseButtonUp(const FGeometry& MyGeometry, c
 FReply SRadiantWebViewHUDElement::OnMouseMove(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	REPLY_IF_NOT_READY(FReply::Handled());
-	HITTEST(FReply::Unhandled());
+	//HITTEST(FReply::Unhandled());
 
 	if (MouseEvent.GetLastScreenSpacePosition() == MouseEvent.GetScreenSpacePosition())
 	{
@@ -399,7 +412,7 @@ FReply SRadiantWebViewHUDElement::OnMouseMove(const FGeometry& MyGeometry, const
 	GetMouseState(MyGeometry, MouseEvent, Event);
 	HUDElement->WebView->GetBrowser()->SendMouseMoveEvent(Event, false);
 
-	//UE_LOG(RadiantUILog, Log, TEXT("MouseMove %d x %d"), Event.X, Event.Y);
+	UE_LOG(RadiantUILog, Log, TEXT("MouseMove %d x %d"), Event.X, Event.Y);
 
 	return FReply::Handled();
 }
@@ -407,7 +420,7 @@ FReply SRadiantWebViewHUDElement::OnMouseMove(const FGeometry& MyGeometry, const
 FReply SRadiantWebViewHUDElement::OnMouseWheel(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	REPLY_IF_NOT_READY(FReply::Handled());
-	HITTEST(FReply::Unhandled());
+	//HITTEST(FReply::Unhandled());
 
 	if (HUDElement->WebView.IsValid())
 	{
@@ -415,13 +428,16 @@ FReply SRadiantWebViewHUDElement::OnMouseWheel(const FGeometry& MyGeometry, cons
 		GetMouseState(MyGeometry, MouseEvent, Event);
 		HUDElement->WebView->GetBrowser()->SendMouseWheelEvent(Event, 0, FMath::FloorToInt(MouseEvent.GetWheelDelta()*80.f + 05.f));
 	}
+
+	UE_LOG(RadiantUILog, Log, TEXT("MouseWheel"));
+
 	return FReply::Handled();
 }
 
 FReply SRadiantWebViewHUDElement::OnMouseButtonDoubleClick(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	REPLY_IF_NOT_READY(FReply::Handled());
-	HITTEST(FReply::Unhandled());
+	//HITTEST(FReply::Unhandled());
 
 	FKey MouseKey = MouseEvent.GetEffectingButton();
 
@@ -442,7 +458,7 @@ FReply SRadiantWebViewHUDElement::OnMouseButtonDoubleClick(const FGeometry& MyGe
 FCursorReply SRadiantWebViewHUDElement::OnCursorQuery(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent) const
 {
 	REPLY_IF_NOT_READY(FCursorReply::Unhandled());
-	HITTEST(FCursorReply::Unhandled());
+	//HITTEST(FCursorReply::Unhandled());
 
 	if (HUDElement->WebView->GetMouseCursor() == ERadiantWebViewCursor::Hover)
 	{
@@ -493,8 +509,11 @@ bool SRadiantWebViewHUDElement::SupportsKeyboardFocus() const
 FReply SRadiantWebViewHUDElement::OnFocusReceived(const FGeometry& MyGeometry, const FFocusEvent& InFocusEvent)
 {
 	REPLY_IF_NOT_READY(FReply::Handled());
+
 	HUDElement->WebView->GetBrowser()->SendFocusEvent(true);
-	return FReply::Handled();
+
+	//return FReply::Handled();
+	return FReply::Handled().ReleaseMouseCapture().SetUserFocus(SharedThis(this), EFocusCause::SetDirectly, true);
 }
 
 void SRadiantWebViewHUDElement::OnFocusLost(const FFocusEvent& InFocusEvent)
@@ -502,7 +521,6 @@ void SRadiantWebViewHUDElement::OnFocusLost(const FFocusEvent& InFocusEvent)
 	REPLY_IF_NOT_READY();
 	HUDElement->WebView->GetBrowser()->SendFocusEvent(false);
 }
-
 /*
 bool SRadiantWebViewHUDElement::OnHitTest(const FGeometry& MyGeometry, FVector2D InAbsoluteCursorPosition)
 {
@@ -561,7 +579,6 @@ URadiantWebViewHUDElement::URadiantWebViewHUDElement(const FObjectInitializer& O
 	DefaultSettings.bTransparentRendering = true;
 	DefaultSettings.bProjectedCursor = false;
 	World = nullptr;
-
 }
 
 void URadiantWebViewHUDElement::PostInitProperties()
@@ -578,6 +595,17 @@ void URadiantWebViewHUDElement::PostInitProperties()
 UWorld* URadiantWebViewHUDElement::GetWorld() const
 {
 	return World;
+}
+
+void URadiantWebViewHUDElement::ForceFocus(APlayerController *Owner)
+{
+	/*
+	FInputModeUIOnly InputMode;
+	InputMode.SetWidgetToFocus(SWidget);
+	InputMode.SetLockMouseToViewport(true);
+	Owner->SetInputMode(InputMode);
+	*/
+	FSlateApplication::Get().SetKeyboardFocus(SWidget.ToSharedRef());
 }
 
 void URadiantWebViewHUDElement::SetVisible(bool IsVisible)
