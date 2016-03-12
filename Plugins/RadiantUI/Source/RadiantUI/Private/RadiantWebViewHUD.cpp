@@ -80,7 +80,7 @@ void ARadiantWebViewHUD::BeginPlay()
 		Element->SetSlateVisibility();
 	}
 
-	InputComponent = ConstructObject<UInputComponent>(UInputComponent::StaticClass(), this, TEXT("HUD_InputComponent0"));
+	InputComponent = NewObject<UInputComponent>(this, UInputComponent::StaticClass(), TEXT("HUD_InputComponent0"));
 	if (InputComponent)
 	{
 		InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &ARadiantWebViewHUD::OnLeftMouseButtonClick);

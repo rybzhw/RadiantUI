@@ -15,3 +15,7 @@ https://www.youtube.com/watch?v=g6X76aFz2BA
 * Automatic Input handling: Walk up to any WebActor and use the mouse and keyboard automatically (Doom3 style interfaces).
 * Supports non-flat surfaces: You can map a WebActor onto any mesh and still interact with it (Curved computer screens etc).
 * Networked gameplay support: Multiple players can interact with the same WebActor and see the same output.
+
+# About this repository/fork
+The input on the HUD is currently not working as it should. I´m trying to make the job better, but am still not that ue4-skilled, yet.
+So please don´t use this fork in any production-release.
