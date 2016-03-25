@@ -81,17 +81,6 @@ namespace ERadiantHUDElementInputMode
 	};
 }
 
-UENUM(BlueprintType)
-namespace ERadiantHUDElementHitTest
-{
-	enum Type
-	{
-		None,
-		Rect,
-		Alpha
-	};
-}
-
 UCLASS(abstract, DefaultToInstanced, Blueprintable)
 class RADIANTUI_API URadiantWebViewHUDElement : public UObject, public IRadiantJavaScriptFunctionCallTargetInterface
 {
@@ -116,9 +105,6 @@ public:
 	TEnumAsByte<ERadiantHUDElementInputMode::Type> InputMode;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "HUD|Element")
-	TEnumAsByte<ERadiantHUDElementHitTest::Type> HitTest;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "HUD|Element")
 	FVector2D ViewportResolutionFactor;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "HUD|Element")
@@ -132,9 +118,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "HUD|Element")
 	void SetVisible(bool IsVisible);
-
-	UFUNCTION(BlueprintCallable, Category = "HUD|Element")
-	void SetHitTest(TEnumAsByte<ERadiantHUDElementHitTest::Type> InHitTest);
 
 	UFUNCTION(BlueprintCallable, Category = "HUD|Element")
 	void SetInputMode(TEnumAsByte<ERadiantHUDElementInputMode::Type> InInputMode);
@@ -166,7 +149,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = JavaScript)
 	TScriptInterface<IRadiantJavaScriptFunctionCallTargetInterface> GetJavaScriptCallContext();
 
-	void ForceFocus(APlayerController *Owner);
+	//void ForceFocus(APlayerController *Owner);
 
 	virtual void CallJavaScriptFunction(const FString& HookName, UObject* Parameters) override;
 
