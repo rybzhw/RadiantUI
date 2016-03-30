@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\Variants.cpp" />
+    <ClCompile Include="..\..\Source\Application.cpp" />
+    <ClCompile Include="..\..\Source\CEFProcess.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\Application.hpp" />
+    <ClInclude Include="..\..\Source\Variants.hpp" />
+  </ItemGroup>
+</Project>

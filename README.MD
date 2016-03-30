@@ -16,9 +16,11 @@ https://www.youtube.com/watch?v=g6X76aFz2BA
 * Supports non-flat surfaces: You can map a WebActor onto any mesh and still interact with it (Curved computer screens etc).
 * Networked gameplay support: Multiple players can interact with the same WebActor and see the same output.
 
-#
+# About this Fork
 
-This Fork uses CEF-Branch 2623. GPU/WebGL is disabled.
+This Fork uses **CEF-Branch 2623**. **GPU/WebGL is disabled**.
+
+CEF-Debugfiles are too large for Github (>100MB). You can still download the CEF-Binaries on https://cefbuilds.com/ (Branch 2623).
 
 # When using as a HUD
 

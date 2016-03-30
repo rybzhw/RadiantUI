@@ -1,0 +1,53 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CEFFramework", "CEFFramework\CEFFramework.vcxproj", "{BFD1522D-93E0-465E-A0E7-57B7A4D6E41A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2050137F-891E-4A9D-B5F9-DFED116430EC} = {2050137F-891E-4A9D-B5F9-DFED116430EC}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CEFProcess", "CEFProcess\CEFProcess.vcxproj", "{BFD1521D-93E0-465E-A0E7-57B7A4D6E41A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2050137F-891E-4A9D-B5F9-DFED116430EC} = {2050137F-891E-4A9D-B5F9-DFED116430EC}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libcef_dll_wrapper", "libcef_dll\libcef_dll_wrapper.vcxproj", "{2050137F-891E-4A9D-B5F9-DFED116430EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{3788D4C8-C268-4734-AC28-FE8D3020487D}"
+	ProjectSection(SolutionItems) = preProject
+		..\API\CEFJavaScriptAPI.hpp = ..\API\CEFJavaScriptAPI.hpp
+		..\API\CEFRuntimeAPI.hpp = ..\API\CEFRuntimeAPI.hpp
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BFD1522D-93E0-465E-A0E7-57B7A4D6E41A}.Debug|Win32.ActiveCfg = Debug|x64
+		{BFD1522D-93E0-465E-A0E7-57B7A4D6E41A}.Debug|x64.ActiveCfg = Debug|x64
+		{BFD1522D-93E0-465E-A0E7-57B7A4D6E41A}.Debug|x64.Build.0 = Debug|x64
+		{BFD1522D-93E0-465E-A0E7-57B7A4D6E41A}.Release|Win32.ActiveCfg = Release|x64
+		{BFD1522D-93E0-465E-A0E7-57B7A4D6E41A}.Release|x64.ActiveCfg = Release|x64
+		{BFD1522D-93E0-465E-A0E7-57B7A4D6E41A}.Release|x64.Build.0 = Release|x64
+		{BFD1521D-93E0-465E-A0E7-57B7A4D6E41A}.Debug|Win32.ActiveCfg = Debug|x64
+		{BFD1521D-93E0-465E-A0E7-57B7A4D6E41A}.Debug|x64.ActiveCfg = Debug|x64
+		{BFD1521D-93E0-465E-A0E7-57B7A4D6E41A}.Debug|x64.Build.0 = Debug|x64
+		{BFD1521D-93E0-465E-A0E7-57B7A4D6E41A}.Release|Win32.ActiveCfg = Release|x64
+		{BFD1521D-93E0-465E-A0E7-57B7A4D6E41A}.Release|x64.ActiveCfg = Release|x64
+		{BFD1521D-93E0-465E-A0E7-57B7A4D6E41A}.Release|x64.Build.0 = Release|x64
+		{2050137F-891E-4A9D-B5F9-DFED116430EC}.Debug|Win32.ActiveCfg = Debug|x64
+		{2050137F-891E-4A9D-B5F9-DFED116430EC}.Debug|x64.ActiveCfg = Debug|x64
+		{2050137F-891E-4A9D-B5F9-DFED116430EC}.Debug|x64.Build.0 = Debug|x64
+		{2050137F-891E-4A9D-B5F9-DFED116430EC}.Release|Win32.ActiveCfg = Release|x64
+		{2050137F-891E-4A9D-B5F9-DFED116430EC}.Release|x64.ActiveCfg = Release|x64
+		{2050137F-891E-4A9D-B5F9-DFED116430EC}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
