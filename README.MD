@@ -20,7 +20,7 @@ https://www.youtube.com/watch?v=g6X76aFz2BA
 
 This Fork uses **CEF-Branch 2623**. **GPU/WebGL is disabled**.
 
-CEF-Debugfiles are too large for Github (>100MB). You can still download the CEF-Binaries on https://cefbuilds.com/ (Branch 2623).
+CEF-Debugfiles are too large for Github (>100MB). You can still download the CEF-Binaries under https://cefbuilds.com/ (Branch 2623).
 
 # When using as a HUD
 
