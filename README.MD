@@ -16,10 +16,15 @@ https://www.youtube.com/watch?v=g6X76aFz2BA
 * Supports non-flat surfaces: You can map a WebActor onto any mesh and still interact with it (Curved computer screens etc).
 * Networked gameplay support: Multiple players can interact with the same WebActor and see the same output.
 
+#
+
+This Fork uses CEF-Branch 2623. GPU/WebGL is disabled.
+
 # When using as a HUD
 
 Press Shift+F1 to get the focus to the HUD-Elements.
 If you want to get the Gameinput again, you can do the following.
+
 1. Use the following javascript-code to detect html/body-clicks:
 ```javascript
 $(document).on('click', function(event)
