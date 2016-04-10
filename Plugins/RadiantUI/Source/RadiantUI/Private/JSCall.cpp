@@ -248,7 +248,7 @@ void FJavaScriptHelper::ExecuteHook(UObject* Receiver, const FString& HookName, 
 	{
 		if (Arguments->GetSize() != Function->NumParms)
 		{
-			UE_LOG(RadiantUILog, Error, TEXT("JavaScript Hook Function '%s' on Object '%s' was called with the wrong arguments!"), *HookName, *Receiver->GetPathName());
+			UE_LOG(RadiantUILog, Error, TEXT("JavaScript Hook Function '%s' on Object '%s' was called with the wrong number arguments! The called function(called from JS) desires %i arguments, but the defined(in this game) has %i arguments."), *HookName, *Receiver->GetPathName(), Arguments->GetSize(), Function->NumParms);
 			return;
 		}
 		
