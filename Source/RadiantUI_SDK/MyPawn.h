@@ -1,5 +1,3 @@
-
-
 #pragma once
 
 #include "GameFramework/Pawn.h"
@@ -12,7 +10,4 @@ UCLASS()
 class AMyPawn : public APawn
 {
 	GENERATED_UCLASS_BODY()
-
-	
-	
 };

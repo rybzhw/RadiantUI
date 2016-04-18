@@ -6,8 +6,7 @@
 
 //RADIANTSDK_BIND_TYPES(RADIANTUI_SDK_API)
 
-AMyPawn::AMyPawn(const class FPostConstructInitializeProperties& PCIP)
-	: Super(PCIP)
+AMyPawn::AMyPawn(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 
 }

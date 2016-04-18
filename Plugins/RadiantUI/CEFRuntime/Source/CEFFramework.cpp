@@ -168,7 +168,7 @@ public:
 	{
 		Callbacks->Release();
 		App = NULL;
-		//CefShutdown();
+		CefShutdown();
 		delete this;
 	}
 
