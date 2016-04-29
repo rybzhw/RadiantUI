@@ -63,7 +63,6 @@ void ARadiantWebViewActor::InitDynamicMaterial()
 
 void ARadiantWebViewActor::BindDynamicMaterial()
 {
-	
 	if ((GetNetMode() != NM_DedicatedServer) && MeshComponent && (WebViewRenderComponent->WebView->WebViewCanvas))
 	{
 		if (OldMeshMaterial)

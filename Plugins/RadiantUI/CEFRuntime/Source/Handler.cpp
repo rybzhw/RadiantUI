@@ -322,6 +322,10 @@ bool Handler::ParseURL(const std::string& URL, std::string& OutPath, std::string
 			{
 				OutMimeType = "image/bmp";
 			}
+			else if (Ext == "svg")
+			{
+				OutMimeType = "image/svg+xml";
+			}
 			else if (Ext == "css")
 			{
 				OutMimeType = "text/css";
