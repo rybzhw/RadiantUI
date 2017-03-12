@@ -4,7 +4,9 @@
 #include "RadiantUIPrivatePCH.h"
 
 #if PLATFORM_WINDOWS
+#include "AllowWindowsPlatformTypes.h"
 #include <windows.h>
+#include "HideWindowsPlatformTypes.h"
 #endif
 
 enum

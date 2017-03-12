@@ -15,7 +15,7 @@ ARadiantStaticMeshWebViewActor::ARadiantStaticMeshWebViewActor(const FObjectInit
 	StaticMeshComponent = ObjectInitializer.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("StaticMeshComponent0"));
 
 #if WITH_EDITORONLY_DATA
-	StaticMeshComponent->StaticMesh = DefaultMeshRef.Object;
+	StaticMeshComponent->SetStaticMesh(DefaultMeshRef.Object);
 #endif
 
 	StaticMeshComponent->Mobility = EComponentMobility::Static;
@@ -78,7 +78,7 @@ void ARadiantStaticMeshWebViewActor::ExtractInteractionMesh()
 {
 	check(InteractionMesh == nullptr);
 
-	UStaticMesh* StaticMesh = StaticMeshComponent->StaticMesh;
+	UStaticMesh* StaticMesh = StaticMeshComponent->GetStaticMesh();
 
 	check(StaticMesh->RenderData->LODResources.Num() > 0);
 	
@@ -109,12 +109,12 @@ void ARadiantStaticMeshWebViewActor::ExtractInteractionMesh()
 
 				const int BaseIndex = StaticMeshSection.FirstIndex + (TriangleNum*3);
 
-				for (int i = 0; i < 3; ++i)
+				for (int i2 = 0; i2 < 3; ++i2)
 				{
-					const int Index = Indices[BaseIndex + i];
+					const int Index = Indices[BaseIndex + i2];
 
-					Tri.Verts[i] = LOD.PositionVertexBuffer.VertexPosition(Index);
-					Tri.UV[i] = LOD.VertexBuffer.GetVertexUV(Index, 0);
+					Tri.Verts[i2] = LOD.PositionVertexBuffer.VertexPosition(Index);
+					Tri.UV[i2] = LOD.VertexBuffer.GetVertexUV(Index, 0);
 				}
 
 				InteractionMeshSection.Triangles.Add(Tri);

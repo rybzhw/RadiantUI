@@ -2,7 +2,9 @@
 // See LICENSE for licensing terms.
 
 #include "RadiantUIPrivatePCH.h"
+#include "AllowWindowsPlatformTypes.h"
 #include <windows.h>
+#include "HideWindowsPlatformTypes.h"
 
 namespace
 {

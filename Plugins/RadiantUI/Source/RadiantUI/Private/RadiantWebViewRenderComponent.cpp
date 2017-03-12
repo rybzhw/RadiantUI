@@ -43,7 +43,7 @@ void URadiantWebViewRenderComponent::TickComponent(float DeltaTime, enum ELevelT
 
 	if (WebView.IsValid() && WebView->IsRunning())
 	{
-		WebView->Tick(FPlatformTime::Seconds() - GStartTime, World->GetTimeSeconds(), DeltaTime, World->FeatureLevel);
+		WebView->Tick(FPlatformTime::Seconds() - GStartTime, GetWorld()->GetTimeSeconds(), DeltaTime, GetWorld()->FeatureLevel);
 	}
 }
 
