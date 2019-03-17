@@ -4,6 +4,7 @@
 #pragma once 
 
 #include "RadiantWebViewHUDElement.h"
+#include "GameFramework/HUD.h"
 #include "RadiantWebViewHUD.generated.h"
 
 UCLASS(BlueprintType, Blueprintable)
