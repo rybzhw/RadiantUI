@@ -2,6 +2,7 @@
 // See LICENSE for licensing terms.
 
 #include "RadiantUIPrivatePCH.h"
+#include "RadiantWebViewActor.h"
 #include "JSCall.h"
 
 ARadiantWebViewActor::ARadiantWebViewActor(const FObjectInitializer& ObjectInitializer)
@@ -144,12 +145,17 @@ void ARadiantWebViewActor::CallJavaScriptFunction(const FString& HookName, UObje
 {
 	if (!HookName.IsEmpty() && Parameters && WebViewRenderComponent && WebViewRenderComponent->WebView.IsValid())
 	{
-		ICefRuntimeVariantList* Arguments = FJavaScriptHelper::CreateVariantList(Parameters->GetClass(), Parameters, WebViewRenderComponent->WebView->GetVariantFactory());
-		FTCHARToUTF8 Convert(*HookName);
-		WebViewRenderComponent->WebView->CallJavaScriptFunction(Convert.Get(), Arguments);
-		if (Arguments)
+		TSharedPtr<FRadiantWebView> WebView = WebViewRenderComponent->WebView;
+
+		if (WebView.IsValid())
 		{
-			Arguments->Release();
+			ICefRuntimeVariantList* Arguments = FJavaScriptHelper::CreateVariantList(Parameters->GetClass(), Parameters, WebView->GetVariantFactory());
+			FTCHARToUTF8 Convert(*HookName);
+			WebViewRenderComponent->WebView->CallJavaScriptFunction(Convert.Get(), Arguments);
+			if (Arguments)
+			{
+				Arguments->Release();
+			}
 		}
 	}
 }
@@ -623,7 +629,7 @@ bool ARadiantWebViewActor::TraceScreenPoint(APawn* InPawn, FVector2D& OutUV)
 	static FName TraceTag = FName(TEXT("RadiantGUITrace"));
 	
 	FCollisionQueryParams TraceParams(TraceTag, true, InPawn);
-	TraceParams.bTraceAsyncScene = true;
+	// TraceParams.bTraceAsyncScene = true;
 	TraceParams.bReturnFaceIndex = true;
 
 	FHitResult HitResult;

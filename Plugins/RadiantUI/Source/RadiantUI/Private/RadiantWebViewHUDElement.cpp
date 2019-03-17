@@ -2,6 +2,7 @@
 // See LICENSE for licensing terms.
 
 #include "RadiantUIPrivatePCH.h"
+#include "RadiantWebViewHUDElement.h"
 #include "JSCall.h"
 
 #if PLATFORM_WINDOWS
@@ -607,50 +608,75 @@ void URadiantWebViewHUDElement::SetInputMode(TEnumAsByte<ERadiantHUDElementInput
 
 bool URadiantWebViewHUDElement::CanNavigateForward()
 {
-	check(WebView.IsValid());
-	return WebView->CanNavigateForward();
+	if (WebView)
+	{
+		return WebView->CanNavigateForward();
+	}
+
+	return false;
 }
 
 bool URadiantWebViewHUDElement::CanNavigateBackward()
 {
-	check(WebView.IsValid());
-	return WebView->CanNavigateBackward();
+	if (WebView)
+	{
+		return WebView->CanNavigateBackward();
+	}
+
+	return false;
 }
 
 void URadiantWebViewHUDElement::NavigateForward()
 {
-	check(WebView.IsValid());
-	WebView->NavigateForward();
+	if (WebView)
+	{
+		WebView->NavigateForward();
+	}
 }
 
 void URadiantWebViewHUDElement::NavigateBackward()
 {
-	check(WebView.IsValid());
-	WebView->NavigateBackward();
+	if (WebView)
+	{
+		WebView->NavigateBackward();
+	}
 }
 
 void URadiantWebViewHUDElement::LoadURL(const FString& InURL)
 {
-	check(WebView.IsValid());
-	WebView->LoadURL(InURL);
+	UE_LOG(RadiantUILog, Log, TEXT("Loading URL %s"), *InURL);
+	if (WebView)
+	{
+		WebView->LoadURL(InURL);
+	}
 }
 
 FString URadiantWebViewHUDElement::GetURL()
 {
-	check(WebView.IsValid());
-	return WebView->GetURL();
+	if (WebView)
+	{
+		return WebView->GetURL();
+	}
+
+	return FString("");
 }
 
 void URadiantWebViewHUDElement::SetRefreshRate(float InFramesPerSecond)
 {
-	check(WebView.IsValid());
-	WebView->SetRefreshRate(InFramesPerSecond);
+	if (WebView)
+	{
+		WebView->SetRefreshRate(InFramesPerSecond);
+	}
 }
 
 float URadiantWebViewHUDElement::GetRefreshRate()
 {
-	check(WebView.IsValid());
-	return WebView->GetRefreshRate();
+	if (WebView)
+	{
+		return WebView->GetRefreshRate();
+	}
+
+	return 0.0f;
 }
 
 void URadiantWebViewHUDElement::SetSlateVisibility()

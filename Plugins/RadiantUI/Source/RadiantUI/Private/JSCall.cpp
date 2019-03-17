@@ -238,7 +238,7 @@ void FJavaScriptHelper::ExecuteHook(UObject* Receiver, const FString& HookName, 
 	UFunction* Function = Receiver->GetClass()->FindFunctionByName(*HookName);
 	if (!Function)
 	{
-		UE_LOG(RadiantUILog, Error, TEXT("JavaScript Hook Function '%s' was not found"), *HookName);
+		UE_LOG(RadiantUILog, Error, TEXT("JavaScript Hook Function '%s' in class '%s' was not found"), *HookName, *Receiver->GetClass()->GetFullName());
 		return;
 	}
 
@@ -286,24 +286,29 @@ void FJavaScriptHelper::ExecuteHook(UObject* Receiver, const FString& HookName, 
 
 ICefRuntimeVariantList* FJavaScriptHelper::CreateVariantList(UStruct* Class, void* Container, ICefRuntimeVariantFactory* VariantFactory)
 {
-	ICefRuntimeVariantList* List = VariantFactory->CreateList(0);
-
-	for (TFieldIterator<UProperty> It(Class, EFieldIteratorFlags::ExcludeSuper); It; ++It)
+	if (VariantFactory)
 	{
-		UProperty *Property = *It;
+		ICefRuntimeVariantList* List = VariantFactory->CreateList(0);
 
-		ICefRuntimeVariant* Variant = TranslatePropertyHelper(Property, Property->ContainerPtrToValuePtr<void*>(Container, 0), VariantFactory);
-		if (Variant)
+		for (TFieldIterator<UProperty> It(Class, EFieldIteratorFlags::ExcludeSuper); It; ++It)
 		{
-			List->SetValue(List->GetSize(), Variant);
+			UProperty *Property = *It;
+
+			ICefRuntimeVariant* Variant = TranslatePropertyHelper(Property, Property->ContainerPtrToValuePtr<void*>(Container, 0), VariantFactory);
+			if (Variant)
+			{
+				List->SetValue(List->GetSize(), Variant);
+			}
 		}
-	}
 
-	if (List->GetSize() < 1)
-	{
-		List->Release();
-		List = nullptr;
-	}
+		if (List->GetSize() < 1)
+		{
+			List->Release();
+			List = nullptr;
+		}
 
-	return List;
+		return List;
+	}
+	
+	return nullptr;
 }

@@ -2,7 +2,11 @@
 // See LICENSE for licensing terms.
 
 #include "RadiantUIPrivatePCH.h"
+#include "RadiantWebView.h"
 #include "../../../CefRuntime/API/CEFRuntimeAPI.hpp"
+#include "AllowWindowsPlatformTypes.h"
+#include <windows.h>
+#include "HideWindowsPlatformTypes.h"
 
 struct FRect
 {
@@ -181,21 +185,24 @@ FRadiantWebViewCursor::FRadiantWebViewCursor()
 FRadiantWebViewCursorSet::FRadiantWebViewCursorSet()
 {
 #if WITH_EDITORONLY_DATA
-	static ConstructorHelpers::FObjectFinder<UTexture2D> DefaultArrow(TEXT("/RadiantUI/DefaultArrow"));
-	static ConstructorHelpers::FObjectFinder<UTexture2D> DefaultHover(TEXT("/RadiantUI/DefaultHover"));
+	//static ConstructorHelpers::FObjectFinder<UTexture2D> DefaultArrow(TEXT("/RadiantUI/DefaultArrow"));
+	//static ConstructorHelpers::FObjectFinder<UTexture2D> DefaultHover(TEXT("/RadiantUI/DefaultHover"));
 
-	Arrow.Image = DefaultArrow.Object;
-	Hover.Image = DefaultHover.Object;
+	Arrow.Image = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), NULL, TEXT("/RadiantUI/DefaultArrow")));
+	Hover.Image = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), NULL, TEXT("/RadiantUI/DefaultHover")));
+
+	//Arrow.Image = DefaultArrow.Object;
+	//Hover.Image = DefaultHover.Object;
 #endif
 }
 
 FRadiantWebView::FRadiantWebView(const FRadiantWebViewDefaultSettings& Settings)
-: Cursors(Settings.Cursors)
+: URL(Settings.URL)
 , Size(Settings.Size)
-, RefreshRate(Settings.RefreshRate)
-, URL(Settings.URL)
-, bCursorEnabled(Settings.bProjectedCursor)
 , InitialCanvasColor(Settings.InitialCanvasColor)
+, Cursors(Settings.Cursors)
+, bCursorEnabled(Settings.bProjectedCursor)
+, RefreshRate(Settings.RefreshRate)
 {
 	bCursorVisible = false;
 	bFocusingEditableField = true;
@@ -472,9 +479,9 @@ void FRadiantWebView::AcquireBrowser()
 	ICefRuntimeAPI *API = GetCefRuntime();
 	if (API)
 	{
-		while (WebView == nullptr)
+		for (int Index = 0; Index < 1 && WebView == nullptr; Index++)
 		{
-			FPlatformProcess::Sleep(0);
+			FPlatformProcess::Sleep(1);
 		}
 	}
 }
@@ -613,15 +620,21 @@ ERadiantWebViewCursor::Type FRadiantWebView::GetMouseCursor()
 ICefRuntimeVariantFactory* FRadiantWebView::GetVariantFactory()
 {
 	AcquireBrowser();
-	check(WebView);
-	return WebView->GetVariantFactory();
+	if (WebView)
+	{
+		return WebView->GetVariantFactory();
+	}
+
+	return nullptr;
 }
 
 void FRadiantWebView::CallJavaScriptFunction(const char* InHookName, ICefRuntimeVariantList* InArguments)
 {
 	AcquireBrowser();
-	check(WebView);
-	WebView->ExecuteJSHook(InHookName, InArguments);
+	if (WebView)
+	{
+		WebView->ExecuteJSHook(InHookName, InArguments);
+	}
 }
 
 void FRadiantWebView::ProcessPendingCallbacks()
@@ -833,7 +846,7 @@ void FRadiantWebView::ExecuteJSHook_Callback(const char* InHookName, ICefRuntime
 
 ICefStream* FRadiantWebView::GetFileStream(const char* FilePath)
 {
-	FString FullPath = FString::Printf(TEXT("%s%s"), *FPaths::GameContentDir(), *FString(FilePath));
+	FString FullPath = FString::Printf(TEXT("%s%s"), *FPaths::ProjectContentDir(), *FString(FilePath));
 	return LoadFileToStream(FullPath);
 }
 

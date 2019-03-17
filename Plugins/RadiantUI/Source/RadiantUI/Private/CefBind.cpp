@@ -2,15 +2,17 @@
 // See LICENSE for licensing terms.
 
 #include "RadiantUIPrivatePCH.h"
+#include "CefBind.h"
 #include "AllowWindowsPlatformTypes.h"
 #include <windows.h>
+#include <string>
 #include "HideWindowsPlatformTypes.h"
 
 namespace
 {
 #if defined(WIN32)
 #pragma warning (disable:4191)
-#if RADIANTUI_DEBUG // from RadiantUI.Build.cs
+#if defined(RADIANTUI_DEBUG) // from RadiantUI.Build.cs
 #define DLLNAME "CEFFramework-Debug.dll"
 #define MODULENAME "UE4Editor-RadiantUI-Win64-DebugGame.dll"
 #else
@@ -18,14 +20,15 @@ namespace
 #define MODULENAME "UE4Editor-RadiantUI.dll"
 #endif
 
+/*
 #if !WITH_EDITOR
 #undef MODULENAME
 #define MODULENAME NULL
 #endif
+*/
 
-#define FRAMEWORKPATH "..\\..\\CefRuntime\\Binaries\\Release\\"DLLNAME
-#define FRAMEWORKPATH_NOTFOUND_ERROR TEXT("Unable to get path for ") TEXT("..\\..\\CefRuntime\\Binaries\\Release\\") TEXT(DLLNAME)
-#define FRAMEWORKPATH_LOAD_ERROR TEXT("LoadLibrary failed on ") TEXT("..\\..\\CefRuntime\\Binaries\\Release\\") TEXT(DLLNAME)
+//#define FRAMEWORKPATH "..\\..\\CefRuntime\\Binaries\\Release\\"DLLNAME
+#define FRAMEWORKPATH "Plugins\\RadiantUI\\CefRuntime\\Binaries\\Release\\"DLLNAME
 
 	static ICefRuntimeAPI* LoadCefFrameworkDLL(ICefRuntimeCallbacks *InCallbacks)
 	{
@@ -39,6 +42,7 @@ namespace
 
 		bLoaded = true;
 
+		/*
 		HMODULE Module = GetModuleHandleA(MODULENAME);
 		if (Module == NULL)
 		{
@@ -61,7 +65,7 @@ namespace
 
 		if (0 == GetFullPathNameA(szModuleName, 255, szModulePath, &szFilePart))
 		{
-			UE_LOG(RadiantUILog, Error, FRAMEWORKPATH_NOTFOUND_ERROR);
+			UE_LOG(RadiantUILog, Error, TEXT("Unable to get path for %s"), FRAMEWORKPATH);
 			return nullptr;
 		}
 
@@ -71,12 +75,24 @@ namespace
 		}
 
 		strcat_s(szModulePath, 256, FRAMEWORKPATH);
+		*/
 
-		HMODULE Library = LoadLibraryExA(szModulePath, NULL, LOAD_LIBRARY_SEARCH_DEFAULT_DIRS|LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR);
+		FString RelativePath = FPaths::ProjectDir();
+		FString FullPath = IFileManager::Get().ConvertToAbsolutePathForExternalAppForRead(*RelativePath);
+		FullPath += TEXT(FRAMEWORKPATH);
+		UE_LOG(RadiantUILog, Log, TEXT("Loading CEF Framework: %s"), *FullPath);
+		// UE_LOG(RadiantUILog, Log, TEXT("Loading CEF Framework: %s"), *szModulePath);
 
+		// SetDllDirectory(NULL);
+		// AddDllDirectory(L"A:\\Unreal Projects\\ShooterGame\\Plugins\\RadiantUI\\CefRuntime\\Binaries\\Win64");
+		// HMODULE Library = LoadLibraryExA(szModulePath, NULL, LOAD_LIBRARY_SEARCH_DEFAULT_DIRS | LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR);
+		// HMODULE Library = LoadLibraryExA(, NULL, LOAD_LIBRARY_SEARCH_DEFAULT_DIRS | LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR);
+		// "A:\\Unreal Projects\\ShooterGame\\Plugins\\RadiantUI\\CefRuntime\\Binaries\\Release\\CEFFramework.dll"
+		HMODULE Library = LoadLibraryExA(TCHAR_TO_ANSI(*FullPath), NULL, LOAD_LIBRARY_SEARCH_DEFAULT_DIRS | LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR);
+		
 		if (Library == NULL)
 		{
-			UE_LOG(RadiantUILog, Error, FRAMEWORKPATH_LOAD_ERROR);
+			UE_LOG(RadiantUILog, Error, TEXT("Unable to load CefRuntime from %s"), *FullPath);
 			return nullptr;
 		}
 
