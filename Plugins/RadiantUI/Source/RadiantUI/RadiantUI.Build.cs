@@ -6,9 +6,13 @@ namespace UnrealBuildTool.Rules
 {
 	public class RadiantUI : ModuleRules
 	{
-		public RadiantUI(TargetInfo Target)
+		public RadiantUI(ReadOnlyTargetRules Target) : base(Target)
 		{
-			PublicIncludePaths.AddRange(
+            // PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+            bEnforceIWYU = false;
+
+            PublicIncludePaths.AddRange(
 				new string[] {
 				}
 			);
@@ -35,7 +39,8 @@ namespace UnrealBuildTool.Rules
 				{
 					"InputCore",
                     "RenderCore",
-                    "ShaderCore",
+                    "UtilityShaders",
+                    // "ShaderCore",
                     "RHI"
 				}
 			);
@@ -44,6 +49,20 @@ namespace UnrealBuildTool.Rules
 			{
 				Definitions.Add("RADIANTUI_DEBUG=1");
 			}
-		}
-	}
+
+            CopyToBinaries();
+        }
+
+        private void CopyToBinaries()
+        { 
+            //string binariesDir = Path.Combine(GetUProjectPath(), "Binaries", Target.Platform.ToString());
+            //string filename = Path.GetFileName(Filepath);
+
+            //Directory.CreateDirectory("asdf");
+
+            //if (!File.Exists(Path.Combine(binariesDir, filename)))
+            //    File.Copy(Filepath, Path.Combine(binariesDir, filename), true);
+        }
+    }
 }
+
