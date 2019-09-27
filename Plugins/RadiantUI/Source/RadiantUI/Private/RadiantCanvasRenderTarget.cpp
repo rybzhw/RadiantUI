@@ -45,6 +45,18 @@ void URadiantCanvasRenderTarget::BeginPaint(float InRealTime, float InWorldTime,
 {
 	check(Canvas == nullptr);
 
+	//ENQUEUE_UNIQUE_RENDER_COMMAND_ONEPARAMETER
+	//(
+	//	SetupRenderTargetViewport,
+	//	FTextureRenderTarget2DResource*,
+	//	RenderTarget,
+	//	(FTextureRenderTarget2DResource*)RenderTargetTexture->GameThread_GetRenderTargetResource(),
+	//	{
+	//		SetRenderTarget(RHICmdList, RenderTarget->GetRenderTargetTexture(), FTexture2DRHIRef());
+	//		RHICmdList.SetViewport(0, 0, 0.0f, RenderTarget->GetSizeXY().X, RenderTarget->GetSizeXY().Y, 1.0f);
+	//	}
+	//);
+
 	// Setup the viewport
 	ENQUEUE_UNIQUE_RENDER_COMMAND_ONEPARAMETER
 	(
@@ -52,11 +64,15 @@ void URadiantCanvasRenderTarget::BeginPaint(float InRealTime, float InWorldTime,
 		FTextureRenderTarget2DResource*,
 		RenderTarget,
 		(FTextureRenderTarget2DResource*)RenderTargetTexture->GameThread_GetRenderTargetResource(),
-		{
-			SetRenderTarget(RHICmdList, RenderTarget->GetRenderTargetTexture(), FTexture2DRHIRef());
+		{ 
+			FRHIRenderPassInfo info(RenderTarget->GetRenderTargetTexture()->GetTexture2D(), ERenderTargetActions::DontLoad_Store);
+			IRHICommandContext& c = RHICmdList.GetContext();
+			c.RHIBeginRenderPass(info, TEXT("NameOfMyRenderpass"));
 			RHICmdList.SetViewport(0, 0, 0.0f, RenderTarget->GetSizeXY().X, RenderTarget->GetSizeXY().Y, 1.0f);
+			c.RHIEndRenderPass();
 		}
 	);
+
 
 	Canvas = new (FCanvasBytes)FCanvas(RenderTargetTexture->GameThread_GetRenderTargetResource(), nullptr, InRealTime, InWorldTime, InWorldDeltaTime, FeatureLevel);
 }
@@ -76,7 +92,7 @@ void URadiantCanvasRenderTarget::EndPaint()
 		RenderTargetResource,
 		RenderTargetTexture->GameThread_GetRenderTargetResource(),
 		{
-			RHICmdList.CopyToResolveTarget(RenderTargetResource->GetRenderTargetTexture(), RenderTargetResource->TextureRHI, true, FResolveParams());
+			RHICmdList.CopyToResolveTarget(RenderTargetResource->GetRenderTargetTexture(), RenderTargetResource->TextureRHI, FResolveParams());
 		}
 	);
 }

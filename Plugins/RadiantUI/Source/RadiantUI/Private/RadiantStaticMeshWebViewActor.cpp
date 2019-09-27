@@ -19,7 +19,7 @@ ARadiantStaticMeshWebViewActor::ARadiantStaticMeshWebViewActor(const FObjectInit
 #endif
 
 	StaticMeshComponent->Mobility = EComponentMobility::Static;
-	StaticMeshComponent->bGenerateOverlapEvents = false;
+	StaticMeshComponent->SetGenerateOverlapEvents(false);
 	StaticMeshComponent->bIgnoreInstanceForTextureStreaming = true;
 	StaticMeshComponent->SetCollisionProfileName(UCollisionProfile::BlockAll_ProfileName);
 	RootComponent = StaticMeshComponent;
@@ -113,8 +113,8 @@ void ARadiantStaticMeshWebViewActor::ExtractInteractionMesh()
 				{
 					const int Index = Indices[BaseIndex + i2];
 
-					Tri.Verts[i2] = LOD.PositionVertexBuffer.VertexPosition(Index);
-					Tri.UV[i2] = LOD.VertexBuffer.GetVertexUV(Index, 0);
+					Tri.Verts[i2] = LOD.VertexBuffers.PositionVertexBuffer.VertexPosition(Index);
+					Tri.UV[i2] = LOD.VertexBuffers.StaticMeshVertexBuffer.GetVertexUV(Index, 0);
 				}
 
 				InteractionMeshSection.Triangles.Add(Tri);

@@ -760,7 +760,15 @@ void FRadiantWebView::UpdateTextureAndRedrawCanvas(float InRealTime, float InWor
 	{
 		FScopeLock L(&CriticalSection);
 		++NumPendingRenderCommands;
-		ENQUEUE_UNIQUE_RENDER_COMMAND_ONEPARAMETER_CREATE(FQueueUpdateTextureCmd, FRadiantWebView*, this);
+		//ENQUEUE_UNIQUE_RENDER_COMMAND_ONEPARAMETER_CREATE(FQueueUpdateTextureCmd, FRadiantWebView*, this);
+
+		ENQUEUE_RENDER_COMMAND(FQueueUpdateTextureCmd)(
+			[this](FRHICommandListImmediate& RHICmdList)
+		{
+			this->RenderThread_UpdateTexture();
+			--this->NumPendingRenderCommands;
+		});
+
 		bTextureDirty = false;
 	}
 

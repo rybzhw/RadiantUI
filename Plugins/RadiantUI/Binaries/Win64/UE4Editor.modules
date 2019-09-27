@@ -1,8 +1,7 @@
 {
-	"Changelist" : 3299760,
-	"BuildId" : "ec4170f8-bad9-4052-ab40-93ed015a6ec8",
-	"Modules" : 
+	"BuildId": "def93a0f-fa08-48bb-9839-6ba7aa2eb19f",
+	"Modules": 
 	{
-		"RadiantUI" : "UE4Editor-RadiantUI.dll"
+		"RadiantUI": "UE4Editor-RadiantUI.dll"
 	}
 }

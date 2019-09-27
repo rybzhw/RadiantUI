@@ -1,16 +1,8 @@
 {
 	"FileVersion": 3,
-	"Version": 0,
-	"VersionName": "0.0",
-	"EngineVersion": "4.2.1-2101290+++depot+UE4-Releases+4.2",
-	"PackageFileUE4Version": 363,
-	"PackageFileLicenseeUE4Version": 0,
-	"EngineAssociation": "4.11",
-	"FriendlyName": "",
-	"Description": "",
+	"EngineAssociation": "{EE307457-4E16-7248-C32C-6684FFB54CD5}",
 	"Category": "",
-	"CreatedBy": "",
-	"CreatedByURL": "",
+	"Description": "",
 	"Modules": [
 		{
 			"Name": "RadiantUI_SDK",
@@ -18,5 +10,22 @@
 			"LoadingPhase": "Default"
 		}
 	],
-	"EpicSampleNameHash": "0"
+	"Plugins": [
+		{
+			"Name": "UE4SimpleLua",
+			"Enabled": false
+		},
+		{
+			"Name": "AdvancedStructBox",
+			"Enabled": false
+		},
+		{
+			"Name": "BuglyCrashReport",
+			"Enabled": false
+		},
+		{
+			"Name": "EditorFunctionExporter",
+			"Enabled": false
+		}
+	]
 }

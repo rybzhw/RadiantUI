@@ -1,0 +1,11 @@
+DerivedDataCache/
+Intermediate/
+Saved/
+Plugins/RadiantUI/Intermediate/
+.vs/
+**/*.pdb
+**/*.target
+**/*.modules
+**/*.sln
+*.modules
+Plugins/RadiantUI/Binaries/Win64/UE4Editor.modules

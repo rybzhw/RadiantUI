@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class RadiantUI_SDK : ModuleRules
 {
-	public RadiantUI_SDK(TargetInfo Target)
+	public RadiantUI_SDK(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "RadiantUI" });
 

@@ -22,7 +22,7 @@ namespace ERadiantWebViewCursor
 	};
 }
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct RADIANTUI_API FRadiantWebViewCursor
 {
 	GENERATED_USTRUCT_BODY()
@@ -39,7 +39,7 @@ struct RADIANTUI_API FRadiantWebViewCursor
 	UTexture2D* Image;
 };
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct RADIANTUI_API FRadiantWebViewCursorSet
 {
 	GENERATED_USTRUCT_BODY()
@@ -53,7 +53,7 @@ struct RADIANTUI_API FRadiantWebViewCursorSet
 	FRadiantWebViewCursor Hover;
 };
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct RADIANTUI_API FRadiantWebViewDefaultSettings
 {
 	GENERATED_USTRUCT_BODY()
@@ -225,13 +225,19 @@ private:
 	float TextureUpdateTime;
 	float RefreshRate;
 
-	ENQUEUE_UNIQUE_RENDER_COMMAND_ONEPARAMETER_DECLARE(
-		FQueueUpdateTextureCmd,
-		FRadiantWebView*, WebView, nullptr,
-		{
-		WebView->RenderThread_UpdateTexture();
-		--WebView->NumPendingRenderCommands;
-	})
+	//ENQUEUE_RENDER_COMMAND(FQueueUpdateTextureCmd)(
+	//	[WebView](FRHICommandListImmediate& RHICmdList)
+	//	{
+	//		WebView->RenderThread_UpdateTexture();
+	//	})
+
+	//ENQUEUE_UNIQUE_RENDER_COMMAND_ONEPARAMETER_DECLARE(
+	//	FQueueUpdateTextureCmd,
+	//	FRadiantWebView*, WebView, nullptr,
+	//	{
+	//	WebView->RenderThread_UpdateTexture();
+	//	--WebView->NumPendingRenderCommands;
+	//})
 
 	friend class EURCMacro_FQueueUpdateTextureCmd;
 
@@ -276,7 +282,7 @@ private:
 	// When the associated webview is being released.
 	// If there are no more references to the ICefWebViewCallbacks 
 	// object it should be destroyed by the owner.
-	virtual void Release(ICefWebView *InWebView);
+	void Release(ICefWebView *InWebView);
 
 	// End ICefWebViewCallbacks;
 
